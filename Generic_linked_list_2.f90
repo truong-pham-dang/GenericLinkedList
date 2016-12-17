@@ -200,7 +200,7 @@ END FUNCTION LI_Remove_Head
 END MODULE Generic_List
 
 !..........................................................................
-PROGRAM Main
+PROGRAM MAIN
 
 ! Defines and manipulates list(s) of a user-defined type all based on
 ! a single generic list type. 
@@ -208,6 +208,8 @@ PROGRAM Main
 USE Generic_List, ONLY : Link_Ptr_Type,Link_Type,List_Type
 USE Generic_List, ONLY : LI_Init_List,LI_Add_To_Head,LI_Get_Head,&
      LI_Remove_Head,LI_Get_Next,LI_Associated,LI_Get_Len
+
+USE IFPORT !Comment it if you don't use Visual Fortran
 
 IMPLICIT NONE
 
@@ -244,7 +246,7 @@ N=5
 DO I=1,N
    ALLOCATE(User%P); ALLOCATE(User%P%Data)
    User%P%Data%Index = I
-   User%P%Data%User_Stuff = I*I
+   User%P%Data%User_Stuff = IRAND(I)
    Link = TRANSFER(User,Link)
    CALL LI_Add_To_Head(Link,User_List)
 ENDDO
