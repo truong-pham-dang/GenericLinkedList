@@ -99,6 +99,7 @@ contains
        nullify(current)
        current => next
     end do
+    
   end subroutine list_free
 
   ! Insert a list node after SELF containing DATA (optional)
@@ -118,6 +119,8 @@ contains
 
     next%next => self%next
     self%next => next
+    !next%next => seft
+    !seft => next
   end subroutine list_insert
 
   ! Store the encoded DATA in list node SELF
@@ -146,11 +149,12 @@ contains
     list_next => self%next
   end function list_next
 
-end module generic_list
+    end module generic_list
 
 
 ! Written: DANG Truong
-! Date: 12-17-2016      
+! Date: 12-17-2016
+! Updated: 01-08-2017    
       program test_list
       use generic_list
       use data 
@@ -159,37 +163,47 @@ end module generic_list
       type(list_node_t), pointer :: list => null()
       type(data_ptr) :: ptr
       
-      integer :: i,k
+      integer :: i, k
 
-      i = 1
-
-      ! Allocate a new data element
-      allocate(ptr%p)
-      ptr%p%n = i
-
-      ! Initialize the list with the first data element
-      call list_init(list, transfer(ptr, list_data))
-      print *, 'Initializing list with data:', ptr%p%n
-!      deallocate(ptr%p)
-
-      i = 2
-      do while (associated(list))
-      ! Allocate second to sixth data elements
-      allocate(ptr%p)
-      ptr%p%n = i
-
-      ! Insert data element into the list
-      call list_insert(list, transfer(ptr, list_data))
-       
-      print *, 'Inserting node with data:', ptr%p%n
-      ptr = transfer(list_get(list_next(list)), ptr)
-      print *, 'Retrieve data:', ptr%p%n
-      i = i  + 1
-      if (i==7) goto 123
+!      i = 1
+!
+!      ! Allocate a new data element
+!      allocate(ptr%p)
+!      ptr%p%n = i
+!
+!      ! Initialize the list with the first data element
+!      call list_init(list, transfer(ptr, list_data))
+!      print *, 'Initializing list with data:', ptr%p%n
+!!      deallocate(ptr%p)
+!
+!      i = 2
+!      do while (associated(list))
+!      ! Allocate second to sixth data elements
+!      allocate(ptr%p)
+!      ptr%p%n = i
+!
+!      ! Insert data element into the list
+!      call list_insert(list, transfer(ptr, list_data))
+!       
+!      print *, 'Inserting node with data:', ptr%p%n
+!      ptr = transfer(list_get(list_next(list)), ptr)
+!      print *, 'Retrieve data:', ptr%p%n
+!      i = i  + 1
+!      if (i==7) goto 123
+!      
+!
+!      end do
+!123   continue     
       
-
-      end do
-123   continue     
+      do i = 1, 5
+          allocate(ptr%p)
+          ptr%p%n = i
+          if (.not.associated(list)) then
+              call list_init(list,transfer(ptr,list_data))
+          else
+              call list_insert(list,transfer(ptr,list_data))
+          endif
+      enddo    
       
 
       print*,'*****************************'
