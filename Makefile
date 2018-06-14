@@ -6,7 +6,7 @@ PREPROC    =
 
 OBJS =  modulGenericLinkedList.o \
         modulSampleData.o  \
-	program.o \
+	main.o \
 
 
 .SUFFIXES: .o .f90 .f
