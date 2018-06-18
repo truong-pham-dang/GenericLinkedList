@@ -4,7 +4,7 @@
 ! and open the template in the editor.
 !
 
-!     
+!
 ! File:   main.f90
 ! Author: Truong
 !
@@ -16,38 +16,49 @@ program testGenericLinkedList
   use SampleData
   implicit none
 
-  type(list_node_t), pointer :: list => null()
-  type(dataRealPtr) :: ptr
+  call exec
 
-  ! Allocate a new data element
-  ptr = dataRealPtr(2.7183)
 
-  ! Initialize the list with the first data element
-  call list_init(list, transfer(ptr, list_data))
-  print *, 'Initializing list with data:'
-  call ptr%print()
+  contains
 
-  ! Allocate a second data element
-  ptr = dataRealPtr(0.5772)
+    subroutine exec
+        implicit none
 
-  ! Insert the second into the list
-  call list_insert(list, transfer(ptr, list_data))
-  print *, 'Inserting node with data:'
-  call ptr%print()
+        type(list_node_t), pointer :: list => null()
+        type(dataRealPtr) :: ptr
 
-  ! Retrieve data from the second node and free memory
-  ptr = transfer(list_get(list_next(list)), ptr)
-  print *, 'Second node data:'
-  call ptr%print()
-  call deallocDataReal(ptr)
+        ! Allocate a new data element
+        ptr = dataRealPtr(2.7183)
 
-  ! Retrieve data from the head node and free memory
-  ptr = transfer(list_get(list), ptr)
-  print *, 'Head node data:'
-  call ptr%print()
-  call deallocDataReal(ptr)
+        ! Initialize the list with the first data element
+        call list_init(list, transfer(ptr, list_data))
+        print *, 'Initializing list with data:'
+        call ptr%print()
 
-  ! Free the list
-  call list_free(list)
+        ! Allocate a second data element
+        ptr = dataRealPtr(0.5772)
+
+        ! Insert the second into the list
+        call list_insert(list, transfer(ptr, list_data))
+        print *, 'Inserting node with data:'
+        call ptr%print()
+
+        ! Retrieve data from the second node and free memory
+        ptr = transfer(list_get(list_next(list)), ptr)
+        print *, 'Second node data:'
+        call ptr%print()
+
+
+        ! Retrieve data from the head node and free memory
+        ptr = transfer(list_get(list), ptr)
+        print *, 'Head node data:'
+        call ptr%print()
+
+
+        ! Free the list
+        call list_free(list)
+
+    end subroutine
+
 end program testGenericLinkedList
 
