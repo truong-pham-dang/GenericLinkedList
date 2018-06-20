@@ -15,9 +15,9 @@ OBJS =  modulGenericLinkedList.o \
 .f.o:
 	$(LD) -c $(FFLAGS) $<
 
-GenericLinkedList :$(OBJS) 
+GenericLinkedList.exe :$(OBJS) 
 	$(LD) $(LDFLAGS) -o $@ $(OBJS)
 
 clean :
-	rm -f GenericLinkedList *.o core *.mod
+	rm -f GenericLinkedList.exe *.o core *.mod
 
