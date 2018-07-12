@@ -62,6 +62,7 @@ module SampleData
       select type (this)
           type is (dataRealPtr)
               write(6,'(f20.6)') this%p%x
+              write(6,*) '**************************'
       end select
   end subroutine
 

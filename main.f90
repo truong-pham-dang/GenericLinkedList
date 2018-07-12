@@ -25,6 +25,8 @@ program testGenericLinkedList
         implicit none
 
         type(list_node_t), pointer :: list => null()
+        type(list_node_t), pointer :: listTranversal => null()
+        type(list_node_t), pointer :: elem => null()
         type(dataRealPtr) :: ptr
 
         ! Allocate a new data element
@@ -40,19 +42,38 @@ program testGenericLinkedList
 
         ! Insert the second into the list
         call list_insert(list, transfer(ptr, list_data))
-        print *, 'Inserting node with data:'
+        print *, 'Inserting second node with data:'
         call ptr%print()
 
-        ! Retrieve data from the second node and free memory
-        ptr = transfer(list_get(list_next(list)), ptr)
-        print *, 'Second node data:'
+        ! Allocate the third data element
+        ptr = dataRealPtr(10.0002)
+        call list_insert(list, transfer(ptr, list_data))
+        print *, 'Inserting third node with data:'
         call ptr%print()
 
 
-        ! Retrieve data from the head node and free memory
-        ptr = transfer(list_get(list), ptr)
-        print *, 'Head node data:'
-        call ptr%print()
+        ! Delete second node data
+        listTranversal => list
+        do while(associated(listTranversal))
+            ptr = transfer(list_get(listTranversal), ptr)
+            if (abs(ptr%p%x - 10.0002) <= 1.0d-9)then
+                elem => listTranversal
+                call list_delete_element_next_to(listTranversal)
+            endif
+            listTranversal => list_next(listTranversal)
+        enddo
+
+
+
+
+        ! All elements in the list
+        print*, 'All elements in the list'
+        listTranversal => list
+        do while (associated(listTranversal))
+            ptr = transfer(list_get(listTranversal), ptr)
+            call ptr%print()
+            listTranversal => list_next(listTranversal)
+        end do
 
 
         ! Free the list

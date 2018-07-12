@@ -4,7 +4,7 @@
 ! and open the template in the editor.
 !
 
-!     
+!
 ! File:   modulGenericLinkedList.f90
 ! Author: Truong
 !
@@ -46,6 +46,7 @@ module GenericLinkedList
   public :: list_node_t, list_data
   public :: list_init, list_free
   public :: list_insert, list_put, list_get, list_next
+  public :: list_delete_element_next_to
 
   ! A public variable used as a MOLD for transfer()
   integer, dimension(:), allocatable :: list_data
@@ -138,6 +139,31 @@ contains
     type(list_node_t), pointer :: list_next
     list_next => self%next
   end function list_next
+
+  ! Delete a node in the list
+  ! Truong added 09/07/2018
+    subroutine list_delete_element_next_to( list )
+        type(list_node_t), pointer  :: list
+
+        type(list_node_t), pointer  :: current => null()
+        type(list_node_t), pointer  :: prev    => null()
+
+
+        prev    => list
+        current => prev%next
+        do while ( associated(current) )
+            if ( associated(current) ) then
+                prev%next => current%next
+                deallocate( current )
+                nullify( current )
+                exit
+            endif
+            prev    => current
+            current => current%next
+        enddo
+
+    end subroutine list_delete_element_next_to
+
 
 end module GenericLinkedList
 
