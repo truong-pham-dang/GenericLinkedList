@@ -29,7 +29,8 @@ module SampleData
      type(dataReal), pointer :: p => null()
      contains
      procedure :: print   => printDataRealPtr
-     final     :: deallocDataReal        ! not yet implemented in gfortran 4.8.4
+     !final     :: deallocDataReal        ! not yet implemented in gfortran 4.8.4, 
+                                          ! Intel® Fortran Compiler Classic 2021.6.0 failed to execute too
      ! A workaround: a normal subroutine
   end type dataRealPtr
 
