@@ -2,13 +2,18 @@ ifeq ($(TARGET),intel)
         CF = ifort
         FFLAGS =
         LD = ifort
+        ifeq (${OS},macos)
+        	LDFLAGS = -L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib
+        else
+        	LDFLAGS =
+        endif
 else
         CF = gfortran
         FFLAGS = -O3
         LD = gfortran
+        LDFLAGS =
 endif
 
-LDFLAGS    = 
 PREPROC    = 
 
 OBJS =  modulGenericLinkedList.o \
